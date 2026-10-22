@@ -1,0 +1,26 @@
+driver:
+  type: modern_ebpf
+
+json_output: true
+
+customRules:
+  custom-rules.yaml: |
+    - rule: Network Activity In Security Namespace
+      desc: Detects any network connection in security namespace
+      condition: evt.type in (connect, accept) and k8s.ns.name = "security"
+      output: "Network connection detected in security namespace (user=%user.name command=%proc.cmdline connection=%fd.name)"
+      priority: NOTICE
+      tags: [network, k8s]
+
+falcosidekick:
+  enabled: true
+  config:
+    webhook:
+      address: "https:test.fr"
+      minimumpriority: "notice"
+
+
+
+
+
+
